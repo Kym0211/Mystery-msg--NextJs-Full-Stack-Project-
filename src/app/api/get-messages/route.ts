@@ -9,6 +9,7 @@ export async function GET(request: Request){
 
     const session = await getServerSession(authOptions)
     const user: User = session?.user as User
+    console.log("user from get-messages :-", user)
 
     if(!session || !session.user){
         return Response.json({

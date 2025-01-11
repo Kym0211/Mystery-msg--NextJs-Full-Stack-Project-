@@ -97,8 +97,8 @@ const page = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" >
-                Sign-In
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? <Loader2 className="animate-spin" /> : "Sign-In"}
             </Button>
           </form>
           <div className="text-center mt-4">

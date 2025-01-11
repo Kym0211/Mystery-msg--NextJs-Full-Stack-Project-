@@ -33,6 +33,7 @@ type MessageCardProps = {
 }
 
 const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
+    console.log("message from message card :-", message)
     const {toast} = useToast();
     const handleDeleteConfirm = async() => {
         const response = await axios.delete<ApiResponse>(`/api/delete-message/${message._id}`)
@@ -44,7 +45,7 @@ const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
     return(
         <Card>
             <CardHeader>
-                <CardTitle>Card Title</CardTitle>
+                <CardTitle>{message.content}</CardTitle>
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
                         <Button variant="destructive"><X className="w-5 h-5" /></Button>
@@ -63,7 +64,6 @@ const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialog>
-                <CardDescription>Card Description</CardDescription>
             </CardHeader>
             <CardContent>
             </CardContent>

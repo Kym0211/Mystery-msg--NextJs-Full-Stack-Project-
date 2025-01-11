@@ -1,0 +1,17 @@
+[
+    {
+        "title" : "Message from user 123",
+        "content" : "Hello, I am user 123. I am looking for a job in the IT sector. Can you help me?",
+        "recieved": "10 minutes ago"
+    },
+    {
+        "title" : "Message from user 124",
+        "content" : "Hello, I am user 124. I am looking for a job in the IT sector. Can you help me?",
+        "recieved": "20 minutes ago"
+    },
+    {
+        "title":"Message from user 125",
+        "content":"Hello, I am user 125. I am looking for a job in the IT sector. Can you help me?",
+        "recieved":"30 minutes ago"
+    }
+]
