@@ -13,11 +13,10 @@ import axios, { AxiosError } from "axios";
 import { Loader2, RefreshCcw } from "lucide-react";
 import { User } from "next-auth";
 import { useSession } from "next-auth/react";
-import { send } from "process";
 import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-const dashboard = () => {
+const Dashboard = () => {
     const [messages, setMessages] = useState<Message[]>([])
     const [loading, setLoading] = useState(false)
     const [isSwitchLoading, setIsSwitchLoading] = useState(false)
@@ -216,4 +215,4 @@ const dashboard = () => {
 
 }
 
-export default dashboard;
+export default Dashboard;
