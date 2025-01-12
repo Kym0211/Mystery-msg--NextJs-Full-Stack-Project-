@@ -11,10 +11,18 @@ export async function sendVerificationEmail(email: string, username:string, veri
             subject: " Mystry message | Verification code",
             react: VerificationEmail({username, otp:verifyCode})
         })
-        return {success: true, message: "Verification email send successfully"}
+        return {
+            success: true,
+            message: "Verification email send successfully",
+            split: (arg0: string) => { return null; }
+        }
     } catch (emailError) {
         console.error("Error sending verification email", emailError)
-        return {success: false, message: "Failed to send verification email"}
+        return {
+            success: false,
+            message: "Failed to send verification email",
+            split: (arg0: string) => { return null; }
+        }
     }
 }
 

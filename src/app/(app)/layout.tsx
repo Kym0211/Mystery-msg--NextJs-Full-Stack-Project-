@@ -11,7 +11,6 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  // console.log("children", children)
 }: Readonly<{
   children: React.ReactNode;
 }>) {

@@ -1,35 +1,58 @@
-import OpenAI from "openai";
-import { OpenAIStream, StreamingTextResponse } from "ai";
 import { NextResponse } from "next/server";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+export const runtime = "edge"; // Ensure compatibility with edge functions
 
-export const runtime = 'edge'
+// Hugging Face API endpoint and key
+const HF_API_URL = "https://api-inference.huggingface.co/models/google/gemma-2-2b-it";
+const HF_API_KEY = "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";
 
-export async function POST(req: Request){
+// Hardcoded prompt
+const HARDCODED_PROMPT = "ask 3 different random questions";
+
+export async function POST() {
   try {
-      const prompt = "Create a list of three open-ended and engaging questions formatted as a single string. Each question should be separated by '||'. These questions are for an anonymous social messaging platform, like Qooh.me, and should be suitable for a diverse audience. Avoid personal or sensitive topics, focusing instead on universal themes that encourage friendly interaction. Ensure the questions are intriguing, foster curiosity, and contribute to a positive and welcoming conversational environment."
+    // Send the request to Hugging Face with the hardcoded prompt
+    const response = await fetch(HF_API_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${HF_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ inputs: HARDCODED_PROMPT }),
+    });
 
-      const response = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
-        messages: [{ role: 'system', content: prompt }],
-        max_tokens: 400,
-        stream: true
-      });
+    // Handle the response
+    if (!response.ok) {
+      throw new Error(`Hugging Face API error: ${response.statusText}`);
+    }
 
-      const stream = OpenAIStream(response)
-      return new StreamingTextResponse(stream)
+    const result = await response.json();
+
+    // Extract generated text
+    const generatedText = result[0]?.generated_text || "No response generated";
+
+    // Stream the response back
+    const stream = new ReadableStream({
+      start(controller) {
+        const encoder = new TextEncoder();
+        controller.enqueue(encoder.encode(generatedText));
+        controller.close();
+      },
+    });
+
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Transfer-Encoding": "chunked",
+      },
+    });
+
   } catch (error) {
-    if(error instanceof OpenAI.APIError) {
-      const {name, status, headers, message} = error
-      return NextResponse.json({
-        name, status, headers, message
-      }, {status})
-    } else{
-      console.error("An unexpected error occurred:", error)
-      throw error
+    console.error("Error querying Hugging Face API:", error);
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    } else {
+      return NextResponse.json({ error: "Unknown error" }, { status: 500 });
     }
   }
 }

@@ -41,7 +41,6 @@ export async function GET(request: Request){
                 message: "User not found"
             }, {status: 404})
         }
-        console.log("user from get messages :-", user)
         return Response.json({
             success: true, 
             messages: user[0].messages
