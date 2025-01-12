@@ -31,7 +31,7 @@ const FormSchema = z.object({
 const defualtMessages = ["What is something you've always wanted to learn but haven't had the chance to?","If you could instantly master one new skill, what would it be?","What's an experience from your past that really surprised you and left a lasting impression?"]
 
 
-const page = () => {
+const Page = () => {
     const [isSending, setIsSending] = useState(false)
     const [loading, setLoading] = useState(false)
     const {username} = useParams()
@@ -159,4 +159,4 @@ const page = () => {
     );
 }
 
-export default page;
+export default Page;
